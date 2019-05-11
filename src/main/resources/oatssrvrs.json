@@ -1,0 +1,31 @@
+{
+   "oats-servers":[
+      {
+         "vm-user":"testuser",
+         "admin-pwd":"welcome1",
+         "vm-pwd":"Passwd1",
+         "name":"default",
+         "host":"host1",
+         "admin-user":"administrator",
+         "homedir":"\/scratch\/dir1"
+      },
+      {
+         "vm-user":"testuser",
+         "admin-pwd":"welcome1",
+         "vm-pwd":"Passwd1",
+         "name":"server1",
+         "host":"host1",
+         "admin-user":"administrator",
+         "homedir":"\/scratch\/dir1"
+      },
+      {
+         "vm-user":"testuser",
+         "admin-pwd":"welcome2",
+         "vm-pwd":"Passwd2",
+         "name":"server2",
+         "host":"host2",
+         "admin-user":"administrator",
+         "homedir":"\/scratch\/dir2"
+      }
+   ]
+}

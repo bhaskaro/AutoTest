@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified"
+	elementFormDefault="qualified"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="run-tests">
+		<xs:complexType>
+			<xs:sequence>
+
+				<xs:element name="test-set" maxOccurs="unbounded"
+					minOccurs="1">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element type="xs:string" name="test-names" />
+							<xs:element type="xs:string" name="oats-server" />
+							<xs:element type="xs:integer" name="threads" />
+							<xs:element name="sequential" type="xs:boolean" />
+							<xs:element name="properties">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element type="xs:string" name="property" />
+										<xs:element type="xs:string" name="value" />
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+
+	</xs:element>
+</xs:schema>
