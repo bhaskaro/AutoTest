@@ -7,6 +7,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.apache.logging.log4j.LogManager;
@@ -25,6 +26,23 @@ public class ZipUtil implements CommonConstants {
 		String zipFile = "test.zip";
 
 		compressDir(dir, zipFile);
+
+		String str1 = "OUTPUT\\4883a7ec-ddf9-4465-b218-4e8f8efa29e0\\getusers2\\Test.class";
+		String str2 = "OUTPUT\\4883a7ec-ddf9-4465-b218-4e8f8efa29e0\\getusers2";
+
+		if (str1.contains(File.separator)) {
+
+			str1 = FilenameUtils.separatorsToUnix(str1);
+			System.out.println("path sep found " + str1);
+
+			str1 = FilenameUtils.separatorsToWindows(str1);
+			System.out.println("path sep found " + str1);
+
+		} else {
+			System.out.println("path sep not found " + File.separator);
+		}
+
+		System.out.println(str1.replaceAll(str2, ""));
 	}
 
 	public static void compressDir(String srcDir, String targetZip) {
@@ -36,10 +54,19 @@ public class ZipUtil implements CommonConstants {
 		files.stream().forEach(f -> logger.debug("Compressing file/folder : " + f.getAbsolutePath()));
 
 		try (ZipOutputStream zipout = new ZipOutputStream(new FileOutputStream(new File(srcDir, targetZip)))) {
+
 			for (File file : files) {
 
 				if (!file.isDirectory()) {
-					zipout.putNextEntry(new ZipEntry(file.getPath().replaceAll(srcDir, EMPTY_STRING)));
+
+					srcDir = FilenameUtils.separatorsToUnix(srcDir);
+					String filePath = FilenameUtils.separatorsToUnix(file.getPath());
+
+					logger.debug("filePath, srcDir  =============== {}, {} ", filePath, srcDir);
+
+					filePath = filePath.replaceAll(srcDir, EMPTY_STRING);
+
+					zipout.putNextEntry(new ZipEntry(filePath));
 					zipout.write(FileUtils.readFileToByteArray(file));
 					zipout.closeEntry();
 				}
