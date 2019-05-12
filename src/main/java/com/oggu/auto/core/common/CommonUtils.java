@@ -1,5 +1,10 @@
 package com.oggu.auto.core.common;
 
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.text.SimpleDateFormat;
@@ -23,6 +28,8 @@ public class CommonUtils implements CommonConstants {
 		Map<String, String> scriptProperties = getScriptProperties("hello=world,,,,hello2=world2");
 
 		System.out.println("scriptProperties : " + scriptProperties);
+
+		System.out.println(CommonUtils.toStringDate(new Date(), "yyyy-MM-dd'T'HH:mm:ss'Z'"));
 	}
 
 	public static Integer parseIntOrDefault(Object toParse, int defaultValue) {
@@ -81,9 +88,18 @@ public class CommonUtils implements CommonConstants {
 		return tests;
 	}
 
-	public static Logger getLogger(Class<?> clazz) {
+	public static Logger getLogger(Object obj) {
 
-		return LogManager.getLogger(clazz);
+		Logger logger = null;
+
+		if (obj instanceof String) {
+			logger = LogManager.getLogger(String.valueOf(obj));
+		} else if (obj instanceof Class) {
+			logger = LogManager.getLogger((Class<?>) obj);
+		} else {
+			logger = LogManager.getLogger(obj);
+		}
+		return logger;
 	}
 
 	public static Map<String, String> getScriptProperties(String str) {
@@ -104,4 +120,37 @@ public class CommonUtils implements CommonConstants {
 		return new SimpleDateFormat(patern).format(date);
 	}
 
+	/**
+	 * Prints the input text as Text Banner.
+	 * 
+	 * @param bannerTxt
+	 * 
+	 * @return Text Banner
+	 */
+	public static String getBanner(String bannerTxt, int size) {
+
+		StringBuilder bannerOut = new StringBuilder();
+
+		// need to adjust for width and height
+		BufferedImage image = new BufferedImage(144, 32, BufferedImage.TYPE_INT_RGB);
+		Graphics g = image.getGraphics();
+		g.setFont(new Font("Dialog", Font.PLAIN, size));
+		Graphics2D graphics = (Graphics2D) g;
+		graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		// the banner text may affect width and height
+		graphics.drawString(bannerTxt, 6, 24);
+		// ImageIO.write(image, "png", File.createTempFile("AsciiBanner.png", null));
+
+		// need to adjust for width and height
+		for (int y = 0; y < 32; y++) {
+			StringBuilder sb = new StringBuilder();
+			// need to adjust for width and height
+			for (int x = 0; x < 144; x++)
+				sb.append(image.getRGB(x, y) == -16777216 ? " " : image.getRGB(x, y) == -1 ? "#" : "*");
+			if (sb.toString().trim().isEmpty())
+				continue;
+			bannerOut.append(sb).append(NEWLINE_STRING);
+		}
+		return bannerOut.toString();
+	}
 }

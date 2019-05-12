@@ -7,6 +7,7 @@ import com.oggu.auto.core.config.ConfigReader;
 public interface CommonConstants {
 
 	String EMPTY_STRING = "";
+	String NEWLINE_STRING = "\n";
 	String COMMA_STRING = ",";
 	String EQUAL_TO_STRING = "=";
 	String UTF8 = "UTF-8";
@@ -25,5 +26,6 @@ public interface CommonConstants {
 	String RANDOM_UUID = UUID.randomUUID().toString();
 
 	String TEST_SESSION_TIME_FORMAT = "yyyy-mm-dd-hh-MM-";
+	String TESTS_SESSION_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 	String SESSIONS_FILE = "sessions.txt";
 }

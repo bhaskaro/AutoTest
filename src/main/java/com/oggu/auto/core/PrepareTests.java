@@ -39,20 +39,25 @@ public class PrepareTests implements CommonConstants {
 	 */
 	public static void main(String[] args) throws InterruptedException, ExecutionException {
 
-		prepareTests();
+		String uuid = CommonConstants.RANDOM_UUID;
+		prepareTests(uuid);
 	}
 
-	public static void prepareTests() throws AutoRuntimeException {
+	public static void prepareTests(String uuid) throws AutoRuntimeException {
+
+		logger.info("Preparing Tests for UUID : {}", uuid);
+		System.out.println(CommonUtils.getBanner("Preparing Tests.", 10));
+		System.out.println(CommonUtils.getBanner("----------------", 15));
 
 		Map<String, Test> configuredTests = ConfigReader.getTests().stream()
 				.collect(Collectors.toMap(t -> t.getName(), t -> t));
 
-		logger.debug("All Configured Tests : " + configuredTests);
+		logger.debug("All Configured Tests : {}", configuredTests);
 
 		RunTests runTests = ConfigReader.getRunTests();
 		String[] tests = runTests.getTestNames();
 
-		File newRandDir = new File(TEST_EXECUTION_DIR, RANDOM_UUID);
+		File newRandDir = new File(TEST_EXECUTION_DIR, uuid);
 		newRandDir.mkdirs();
 
 		logger.info("New Output folder for this test run :" + newRandDir.getAbsolutePath());
@@ -63,9 +68,9 @@ public class PrepareTests implements CommonConstants {
 			ExecutorService executor = Executors.newFixedThreadPool(tests.length);
 			List<Future<String>> futures = new ArrayList<>();
 
-			for (String test : tests) {
-				Test testConfig = configuredTests.get(test);
-				Future<String> future = executor.submit(new TestPreparor(testConfig));
+			for (String testName : tests) {
+				Test test = configuredTests.get(testName);
+				Future<String> future = executor.submit(new TestPreparor(uuid, test));
 				futures.add(future);
 			}
 

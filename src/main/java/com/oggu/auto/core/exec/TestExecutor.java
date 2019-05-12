@@ -11,23 +11,26 @@ import com.oggu.auto.core.sess.SessionUtil;
 
 public class TestExecutor implements CommonConstants, Callable<String> {
 
-	private static final Logger logger = CommonUtils.getLogger(TestExecutor.class);
+	String uuid = null;
+	String testSessName = null;
 	private Test test = null;
 
-	public TestExecutor(Test test) {
+	public TestExecutor(String uuid, String testSessName, Test test) {
+		this.uuid = uuid;
+		this.testSessName = testSessName;
 		this.test = test;
 	}
 
 	@Override
 	public String call() throws Exception {
 
-		String testSession = SessionUtil.createTestSession(test.getName());
+		Logger logger = CommonUtils.getLogger(test.getName());
 
-		logger.info("running test (" + test.getName() + ") : with session : " + testSession + " on "
+		logger.info("running test (" + test.getName() + ") : with session : " + testSessName + " on "
 				+ test.getDefaultOatsSrvr() + " with concurrency : " + test.getThreads() + " and duration : "
 				+ test.getDuration());
 
-		boolean status = SessionUtil.saveSessionDetails(RANDOM_UUID, testSession, test);
+		boolean status = SessionUtil.saveSessionDetails(uuid, testSessName, test);
 
 		if (logger.isDebugEnabled()) {
 			logger.debug("Saved Session : {}", status);

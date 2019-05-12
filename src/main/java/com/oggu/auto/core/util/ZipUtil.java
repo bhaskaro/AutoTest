@@ -2,6 +2,7 @@ package com.oggu.auto.core.util;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -51,26 +52,25 @@ public class ZipUtil implements CommonConstants {
 
 		Collection<File> files = FileUtils.listFilesAndDirs(new File(srcDir), fileFilter, fileFilter);
 
-		files.stream().forEach(f -> logger.debug("Compressing file/folder : " + f.getAbsolutePath()));
-
 		try (ZipOutputStream zipout = new ZipOutputStream(new FileOutputStream(new File(srcDir, targetZip)))) {
 
-			for (File file : files) {
+			files.stream().filter(file -> !file.isDirectory()).forEach(f -> {
 
-				if (!file.isDirectory()) {
+				final String lsrcDir = FilenameUtils.separatorsToUnix(srcDir);
+				String filePath = FilenameUtils.separatorsToUnix(f.getPath()).replaceAll(lsrcDir, EMPTY_STRING);
 
-					srcDir = FilenameUtils.separatorsToUnix(srcDir);
-					String filePath = FilenameUtils.separatorsToUnix(file.getPath());
+				logger.debug("filePath, srcDir  =============== {}, {} ", filePath, lsrcDir);
 
-					logger.debug("filePath, srcDir  =============== {}, {} ", filePath, srcDir);
-
-					filePath = filePath.replaceAll(srcDir, EMPTY_STRING);
-
+				try {
 					zipout.putNextEntry(new ZipEntry(filePath));
-					zipout.write(FileUtils.readFileToByteArray(file));
+					zipout.write(FileUtils.readFileToByteArray(f));
 					zipout.closeEntry();
+				} catch (IOException e) {
+					logger.error(e.getMessage(), e);
+					throw new AutoRuntimeException(e);
 				}
-			}
+			});
+
 			logger.info("successfully created zip file : " + targetZip);
 		} catch (Exception e) {
 			throw new AutoRuntimeException(e);

@@ -24,9 +24,11 @@ import com.oggu.auto.core.util.ZipUtil;
 
 public class TestPreparor implements CommonConstants, Callable<String> {
 
+	String uuid = null;
 	private Test test = null;
 
-	public TestPreparor(Test test) {
+	public TestPreparor(String uuid, Test test) {
+		this.uuid = uuid;
 		this.test = test;
 	}
 
@@ -36,11 +38,11 @@ public class TestPreparor implements CommonConstants, Callable<String> {
 		// Get logger and add appender
 		Logger logger = LogManager.getLogger(test.getName());
 
-		logger.info("Preparting test (" + test.getName() + ") : found oats server " + test.getDefaultOatsSrvr()
-				+ " with concurrency : " + test.getThreads() + " and duration : " + test.getDuration());
+		logger.info("Preparting test ({}) : found oats server : {} with concurrency : {} and duration : {}",
+				test.getName(), test.getDefaultOatsSrvr(), test.getThreads(), test.getDuration());
 
 		File srcDir = new File(TEST_SOURCE_DIR, test.getDir());
-		File destDir = new File(new File(TEST_EXECUTION_DIR, RANDOM_UUID), test.getName());
+		File destDir = new File(new File(TEST_EXECUTION_DIR, uuid), test.getName());
 		FileUtils.copyDirectory(srcDir, destDir);
 
 		File[] javaFiles = destDir.listFiles(new FilenameFilter() {
@@ -76,9 +78,9 @@ public class TestPreparor implements CommonConstants, Callable<String> {
 				listOfJavaFiles.toArray(new String[listOfJavaFiles.size()]));
 
 		if (compilationResult == 0) {
-			logger.info("Compilation is successful : " + listOfJavaFiles);
+			logger.info("Compilation is successful : {}", listOfJavaFiles);
 		} else {
-			logger.info("Compilation Failed : " + listOfJavaFiles);
+			logger.error("Compilation Failed : {}", listOfJavaFiles);
 		}
 
 		ZipUtil.compressDir(destDir.getPath(), test.getName() + ".zip");
