@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.oggu.auto.core;
+package com.oggu.auto.core.exec;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ import com.oggu.auto.core.common.CommonConstants;
 import com.oggu.auto.core.common.CommonUtils;
 import com.oggu.auto.core.config.ConfigReader;
 import com.oggu.auto.core.excep.AutoRuntimeException;
-import com.oggu.auto.core.exec.TestPreparor;
+import com.oggu.auto.core.exec.thrds.TestPreparorWorker;
 import com.oggu.auto.core.model.RunTests;
 import com.oggu.auto.core.model.Test;
 
@@ -70,7 +70,7 @@ public class PrepareTests implements CommonConstants {
 
 			for (String testName : tests) {
 				Test test = configuredTests.get(testName);
-				Future<String> future = executor.submit(new TestPreparor(uuid, test));
+				Future<String> future = executor.submit(new TestPreparorWorker(uuid, test));
 				futures.add(future);
 			}
 
@@ -85,12 +85,12 @@ public class PrepareTests implements CommonConstants {
 					try {
 						logger.info("Got ouput from TestPreparor : " + f.get());
 					} catch (InterruptedException | ExecutionException e) {
-						throw new AutoRuntimeException(e);
+						throw new AutoRuntimeException(e.getMessage(), e);
 					}
 				});
 			} catch (Exception e) {
 				logger.error(e);
-				throw new AutoRuntimeException(e);
+				throw new AutoRuntimeException(e.getMessage(), e);
 			}
 
 			logger.debug("Prepared all configured tests");

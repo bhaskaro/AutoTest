@@ -67,13 +67,13 @@ public class ZipUtil implements CommonConstants {
 					zipout.closeEntry();
 				} catch (IOException e) {
 					logger.error(e.getMessage(), e);
-					throw new AutoRuntimeException(e);
+					throw new AutoRuntimeException(e.getMessage(), e);
 				}
 			});
 
 			logger.info("successfully created zip file : " + targetZip);
 		} catch (Exception e) {
-			throw new AutoRuntimeException(e);
+			throw new AutoRuntimeException(e.getMessage(), e);
 		}
 
 	}

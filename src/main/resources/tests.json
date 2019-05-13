@@ -1,60 +1,84 @@
 {
-	"tests": [
-		{
-			"duration": 10,
-			"baseline-tps": 45.5,
-			"usecase-name": "GET-USERS-1",
-			"scnProps": "ITERATION-DELAY=2,THINK-TIME=110",
-			"scriptProps": "TENANTPFX=TESTTEN1,BEGIN-TENANT=110",
-			"baseline-flrs": 1,
-			"name": "getusers1",
-			"threads": 10,
-			"baseline-flr-perc": 0.1,
-			"dir": "getusers1",
-			"iterations": 10,
-			"default-oats-server": "server1"
-		},
-		{
-			"duration": 5,
-			"baseline-tps": 45.5,
-			"usecase-name": "GET-USERS-2",
-			"scnProps": "ITERATION-DELAY=4,THINK-TIME=210",
-			"scriptProps": "TENANTPFX=TESTTEN2,BEGIN-TENANT=210",
-			"baseline-flrs": 2,
-			"name": "getusers2",
-			"threads": 20,
-			"baseline-flr-perc": 0.2,
-			"dir": "getusers2",
-			"iterations": 20,
-			"default-oats-server": "default"
-		},
-		{
-			"duration": 7,
-			"baseline-tps": 45.5,
-			"usecase-name": "GET-USERS-3",
-			"scnProps": "ITERATION-DELAY=4,THINK-TIME=210",
-			"scriptProps": "TENANTPFX=TESTTEN2,BEGIN-TENANT=210",
-			"baseline-flrs": 2,
-			"name": "getusers3",
-			"threads": 20,
-			"baseline-flr-perc": 0.2,
-			"dir": "getusers3",
-			"iterations": 20,
-			"default-oats-server": "default"
-		},
-		{
-			"duration": 8,
-			"baseline-tps": 55.6,
-			"usecase-name": "GET-USERS-3",
-			"scnProps": "ITERATION-DELAY=4,THINK-TIME=210",
-			"scriptProps": "TENANTPFX=TESTTEN2,BEGIN-TENANT=210",
-			"baseline-flrs": 3,
-			"name": "getusers3_1",
-			"threads": 20,
-			"baseline-flr-perc": 0.2,
-			"dir": "getusers3",
-			"iterations": 20,
-			"default-oats-server": "default"
-		}
-	]
+   "tests":[
+      {
+         "duration":10,
+         "baseline-tps":45.5,
+         "usecase-name":"GET-USERS-1",
+         "scnProps":[
+            "ITERATION-DELAY=2",
+            "THINK-TIME=10"
+         ],
+         "scriptProps":[
+            "TENANTPFX=TESTTEN1",
+            "BEGIN-TENANT=110"
+         ],
+         "baseline-flrs":1,
+         "name":"getusers1",
+         "threads":10,
+         "baseline-flr-perc":0.1,
+         "dir":"getusers1",
+         "iterations":10,
+         "default-oats-server":"server1"
+      },
+      {
+         "duration":5,
+         "baseline-tps":45.5,
+         "usecase-name":"GET-USERS-2",
+         "scnProps":[
+            "ITERATION-DELAY=4",
+            "THINK-TIME=20"
+         ],
+         "scriptProps":[
+            "TENANTPFX=TESTTEN2",
+            "BEGIN-TENANT=210"
+         ],
+         "baseline-flrs":2,
+         "name":"getusers2",
+         "threads":20,
+         "baseline-flr-perc":0.2,
+         "dir":"getusers2",
+         "iterations":20,
+         "default-oats-server":"default"
+      },
+      {
+         "duration":7,
+         "baseline-tps":45.5,
+         "usecase-name":"GET-USERS-3",
+         "scnProps":[
+            "ITERATION-DELAY=4",
+            "THINK-TIME=30"
+         ],
+         "scriptProps":[
+            "TENANTPFX=TESTTEN2",
+            "BEGIN-TENANT=210"
+         ],
+         "baseline-flrs":2,
+         "name":"getusers3",
+         "threads":20,
+         "baseline-flr-perc":0.2,
+         "dir":"getusers3",
+         "iterations":20,
+         "default-oats-server":"default"
+      },
+      {
+         "duration":8,
+         "baseline-tps":55.6,
+         "usecase-name":"GET-USERS-3",
+         "scnProps":[
+            "ITERATION-DELAY=4",
+            "THINK-TIME=40"
+         ],
+         "scriptProps":[
+            "TENANTPFX=TESTTEN2",
+            "BEGIN-TENANT=210"
+         ],
+         "baseline-flrs":3,
+         "name":"getusers3_1",
+         "threads":20,
+         "baseline-flr-perc":0.2,
+         "dir":"getusers3",
+         "iterations":20,
+         "default-oats-server":"default"
+      }
+   ]
 }

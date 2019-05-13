@@ -1,4 +1,4 @@
-package com.oggu.auto.core.exec;
+package com.oggu.auto.core.exec.thrds;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -22,12 +22,12 @@ import com.oggu.auto.core.common.CommonConstants;
 import com.oggu.auto.core.model.Test;
 import com.oggu.auto.core.util.ZipUtil;
 
-public class TestPreparor implements CommonConstants, Callable<String> {
+public class TestPreparorWorker implements CommonConstants, Callable<String> {
 
 	String uuid = null;
 	private Test test = null;
 
-	public TestPreparor(String uuid, Test test) {
+	public TestPreparorWorker(String uuid, Test test) {
 		this.uuid = uuid;
 		this.test = test;
 	}

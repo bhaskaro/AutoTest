@@ -1,4 +1,4 @@
-package com.oggu.auto.core.exec;
+package com.oggu.auto.core.exec.thrds;
 
 import java.util.concurrent.Callable;
 
@@ -9,13 +9,13 @@ import com.oggu.auto.core.common.CommonUtils;
 import com.oggu.auto.core.model.Test;
 import com.oggu.auto.core.sess.SessionUtil;
 
-public class TestExecutor implements CommonConstants, Callable<String> {
+public class TestStopperWorker implements CommonConstants, Callable<String> {
 
 	String uuid = null;
 	String testSessName = null;
 	private Test test = null;
 
-	public TestExecutor(String uuid, String testSessName, Test test) {
+	public TestStopperWorker(String uuid, String testSessName, Test test) {
 		this.uuid = uuid;
 		this.testSessName = testSessName;
 		this.test = test;
@@ -26,7 +26,7 @@ public class TestExecutor implements CommonConstants, Callable<String> {
 
 		Logger logger = CommonUtils.getLogger(test.getName());
 
-		logger.info("running test (" + test.getName() + ") : with session : " + testSessName + " on "
+		logger.info("stopping test (" + test.getName() + ") : with session : " + testSessName + " on "
 				+ test.getDefaultOatsSrvr() + " with concurrency : " + test.getThreads() + " and duration : "
 				+ test.getDuration());
 

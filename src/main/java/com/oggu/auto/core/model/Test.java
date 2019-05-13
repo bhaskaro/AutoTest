@@ -14,10 +14,11 @@ public class Test {
 	private String name;
 	private String dir;
 	private String usecaseName;
+	private String sessionName;
 	private int threads;
 	private int iterations;
 	private int duration;
-	private String scnProps;
+	private Map<String, String> scnProps;
 	private Map<String, String> scriptProps;
 	private double baselineTps;
 	private int baselineFlrs;
@@ -48,6 +49,14 @@ public class Test {
 		this.usecaseName = usecaseName;
 	}
 
+	public String getSessionName() {
+		return sessionName;
+	}
+
+	public void setSessionName(String sessionName) {
+		this.sessionName = sessionName;
+	}
+
 	public int getThreads() {
 		return threads;
 	}
@@ -72,11 +81,11 @@ public class Test {
 		this.duration = duration;
 	}
 
-	public String getScnProps() {
+	public Map<String, String> getScnProps() {
 		return scnProps;
 	}
 
-	public void setScnProps(String scnProps) {
+	public void setScnProps(Map<String, String> scnProps) {
 		this.scnProps = scnProps;
 	}
 
@@ -122,10 +131,10 @@ public class Test {
 
 	@Override
 	public String toString() {
-		return "Test [name=" + name + ", dir=" + dir + ", usecaseName=" + usecaseName + ", threads=" + threads
-				+ ", iterations=" + iterations + ", duration=" + duration + ", scnProps=" + scnProps + ", scriptProps="
-				+ scriptProps + ", baselineTps=" + baselineTps + ", baselineFlrs=" + baselineFlrs + ", baselineFlrPerc="
-				+ baselineFlrPerc + ", defaultOatsSrvr=" + defaultOatsSrvr + "]";
+		return "Test [name=" + name + ", dir=" + dir + ", usecaseName=" + usecaseName + ", sessionName=" + sessionName
+				+ ", threads=" + threads + ", iterations=" + iterations + ", duration=" + duration + ", scnProps="
+				+ scnProps + ", scriptProps=" + scriptProps + ", baselineTps=" + baselineTps + ", baselineFlrs="
+				+ baselineFlrs + ", baselineFlrPerc=" + baselineFlrPerc + ", defaultOatsSrvr=" + defaultOatsSrvr + "]";
 	}
 
 }

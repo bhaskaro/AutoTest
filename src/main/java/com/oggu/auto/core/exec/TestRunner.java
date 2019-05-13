@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.oggu.auto.core;
+package com.oggu.auto.core.exec;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +20,7 @@ import com.oggu.auto.core.common.CommonConstants;
 import com.oggu.auto.core.common.CommonUtils;
 import com.oggu.auto.core.config.ConfigReader;
 import com.oggu.auto.core.excep.AutoRuntimeException;
-import com.oggu.auto.core.exec.TestExecutor;
+import com.oggu.auto.core.exec.thrds.TestExecutorWorker;
 import com.oggu.auto.core.model.RunTests;
 import com.oggu.auto.core.model.Test;
 import com.oggu.auto.core.sess.SessionUtil;
@@ -80,12 +80,12 @@ public class TestRunner implements CommonConstants {
 						test.setDuration(runTests.getTestsDuration());
 						String testSessName = SessionUtil.createTestSession(test.getName());
 
-						futures.add(executor.submit(new TestExecutor(uuid, testSessName, test)));
+						futures.add(executor.submit(new TestExecutorWorker(uuid, testSessName, test)));
 						try {
 							Thread.sleep(EXCTR_THREAD_DELAY_SECS * 1000);
 						} catch (InterruptedException e) {
 							logger.error(e);
-							throw new AutoRuntimeException(e);
+							throw new AutoRuntimeException(e.getMessage(), e);
 						}
 					});
 
@@ -104,7 +104,7 @@ public class TestRunner implements CommonConstants {
 							logger.info("Got ouput from COMBO tests : {}", f.get());
 						} catch (InterruptedException | ExecutionException e) {
 							logger.error(e);
-							throw new AutoRuntimeException(e);
+							throw new AutoRuntimeException(e.getMessage(), e);
 						}
 					});
 
@@ -116,7 +116,7 @@ public class TestRunner implements CommonConstants {
 
 						Test test = configuredTests.get(testName);
 						String testSessName = SessionUtil.createTestSession(test.getName());
-						FutureTask<String> ft = new FutureTask<>(new TestExecutor(uuid, testSessName, test));
+						FutureTask<String> ft = new FutureTask<>(new TestExecutorWorker(uuid, testSessName, test));
 						new Thread(ft).start();
 
 						// sleep for test duration (test duration)
@@ -129,7 +129,7 @@ public class TestRunner implements CommonConstants {
 							logger.info("got ouput from the task : {}", ft.get());
 						} catch (InterruptedException | ExecutionException e) {
 							logger.error(e);
-							throw new AutoRuntimeException(e);
+							throw new AutoRuntimeException(e.getMessage(), e);
 						}
 					});
 
@@ -139,7 +139,7 @@ public class TestRunner implements CommonConstants {
 			}
 		} catch (Exception e) {
 			logger.error(e);
-			throw new AutoRuntimeException(e);
+			throw new AutoRuntimeException(e.getMessage(), e);
 		}
 	}
 

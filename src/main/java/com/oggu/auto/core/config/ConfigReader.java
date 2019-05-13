@@ -65,7 +65,7 @@ public class ConfigReader implements CommonConstants {
 
 			} catch (IOException | ParseException e) {
 				logger.error(e);
-				throw new AutoRuntimeException(e);
+				throw new AutoRuntimeException(e.getMessage(), e);
 			}
 		}
 
@@ -94,8 +94,8 @@ public class ConfigReader implements CommonConstants {
 					test.setThreads(CommonUtils.parseIntOrDefault(obj.get("threads"), 0));
 					test.setIterations(CommonUtils.parseIntOrDefault(obj.get("iterations"), 0));
 					test.setDuration(CommonUtils.parseIntOrDefault(obj.get("duration"), 0));
-					test.setScnProps(String.valueOf(obj.get("scnProps")));
-					test.setScriptProps(CommonUtils.getScriptProperties(String.valueOf(obj.get("scriptProps"))));
+					test.setScnProps(CommonUtils.convertToMap((JSONArray) obj.get("scnProps")));
+					test.setScriptProps(CommonUtils.convertToMap((JSONArray) obj.get("scriptProps")));
 					test.setBaselineTps(CommonUtils.parseDoubleOrDefault(obj.get("baseline-tps"), 0));
 					test.setBaselineFlrs(CommonUtils.parseIntOrDefault(obj.get("baseline-flrs"), 0));
 					test.setBaselineFlrPerc(CommonUtils.parseDoubleOrDefault(obj.get("baseline-flr-perc"), 0));
@@ -105,7 +105,7 @@ public class ConfigReader implements CommonConstants {
 				});
 			} catch (IOException | ParseException e) {
 				logger.error(e);
-				throw new AutoRuntimeException(e);
+				throw new AutoRuntimeException(e.getMessage(), e);
 			}
 		}
 
@@ -140,7 +140,7 @@ public class ConfigReader implements CommonConstants {
 				});
 			} catch (IOException | ParseException e) {
 				logger.error(e);
-				throw new AutoRuntimeException(e);
+				throw new AutoRuntimeException(e.getMessage(), e);
 			}
 		}
 		return oatsServers;

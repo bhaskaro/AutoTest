@@ -18,6 +18,7 @@ import java.util.stream.Stream;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.json.simple.JSONArray;
 
 public class CommonUtils implements CommonConstants {
 
@@ -25,7 +26,7 @@ public class CommonUtils implements CommonConstants {
 
 		System.out.println(parseIntOrDefault(" 5.0 ", 0));
 
-		Map<String, String> scriptProperties = getScriptProperties("hello=world,,,,hello2=world2");
+		Map<String, String> scriptProperties = getScriptRScnProperties("hello=world,,,,hello2=world2");
 
 		System.out.println("scriptProperties : " + scriptProperties);
 
@@ -102,7 +103,7 @@ public class CommonUtils implements CommonConstants {
 		return logger;
 	}
 
-	public static Map<String, String> getScriptProperties(String str) {
+	public static Map<String, String> getScriptRScnProperties(String str) {
 
 		Map<String, String> collect = null;
 
@@ -152,5 +153,41 @@ public class CommonUtils implements CommonConstants {
 			bannerOut.append(sb).append(NEWLINE_STRING);
 		}
 		return bannerOut.toString();
+	}
+
+	@SuppressWarnings("unchecked")
+	public static Map<String, String> convertToMap(JSONArray jsonArray) {
+
+		Map<String, String> map = null;
+
+		if (jsonArray != null && !jsonArray.isEmpty()) {
+
+			Stream<String> ss = jsonArray.stream().map(String::valueOf);
+			List<String> list = ss.collect(Collectors.toList());
+
+			map = list.stream().collect(Collectors.toList()).stream().filter(s -> s.contains(EQUAL_TO_STRING))
+					.map(elem -> elem.split(EQUAL_TO_STRING)).collect(Collectors.toMap(e -> e[0], e -> e[1]));
+
+		}
+
+		return map;
+	}
+
+	@SuppressWarnings("unchecked")
+	public static Object toJSONArray(Map<String, String> map) {
+
+		final JSONArray jsonArray;
+
+		if (map != null && !map.isEmpty()) {
+			jsonArray = new JSONArray();
+
+			map.entrySet().stream()
+					.map(e -> new StringBuilder().append(e.getKey()).append("=").append(e.getValue()).toString())
+					.forEach(jsonArray::add);
+		} else {
+			jsonArray = null;
+		}
+
+		return jsonArray;
 	}
 }

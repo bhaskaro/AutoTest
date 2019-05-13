@@ -1,7 +1,7 @@
 {
 	"test-names": "getusers1,getusers2,getusers3,getusers3_1",
 	"sequential": false,
-	"tests-duration": 30,
+	"tests-duration": 5,
 	"test-properties": "TENANT-PRX=testtent,BEGIN-TENANT=1",
 	"baseline-flr-perc": 0.5,
 	"baseline-tps": 100.56,
